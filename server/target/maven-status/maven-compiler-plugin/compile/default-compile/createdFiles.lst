@@ -1,0 +1,3 @@
+com\order\message\amqp\MqReceiver.class
+com\order\message\ProductInfoReceiver.class
+com\order\Utils\JsonUtil.class

@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: order
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: CONFIG
+      profile: dev
+    stream:
+      bindings:
+        #orderMessageInput:
+         # destination: orderMessage-Order
+        #orderMessageOutput:
+         # destination: orderMessage-Order
+        orderMessage: #此处orderMessage不是固定的  是你定义的消息队列的名称 即stream接口方法上用的
+          group: order  #随意命名 此例最终会在MQ中创建一个orderMessage-order 的消息队列
+          content-type: application/json #可以将MQ中的对象消息显示为json格式 默认为base64(反正就是看不懂的格式)
+  rabbitmq:
+    host: 47.101.197.240
+    port: 5672
+    password: guest
+    username: guest
+  redis:
+    host: 47.101.197.240
+    port: 6379
+    password: Allure123
+  zipkin:
+    base-url: http://47.101.197.240:9411/
+  sleuth:
+    sampler:
+      percentage: 1  #输出到zipkin页面的比例 1为百分百 默认0.1
+eureka:
+  client:
+    service-url:
+      defaultZone: http://47.101.197.240:8761/eureka
+# 设置超时时间 超过这个时间则触发服务降级
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000   #注意在需要降级的方法上加上@HystrixCommand注解
+    #给指定方法设置超时时间
+    #getProductInfoList2:
+      #execution:
+        #isolation:
+          #thread:
+            #timeoutInMilliseconds: 5000
